@@ -1,0 +1,15 @@
+/* styles.css */
+
+#temp-real {
+    font-weight: bold;
+    color: #d9534f; /* Rojo */
+}
+
+#buzzer-status {
+    font-weight: bold;
+    color: #d9534f; /* Rojo */
+}
+
+input[type="range"] {
+    width: 100%;
+}
