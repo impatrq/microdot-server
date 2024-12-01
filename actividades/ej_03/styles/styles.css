@@ -1,15 +1,53 @@
-/* styles.css */
-
-#temp-real {
-    font-weight: bold;
-    color: #d9534f; /* Rojo */
-}
-
-#buzzer-status {
-    font-weight: bold;
-    color: #d9534f; /* Rojo */
-}
-
-input[type="range"] {
+header {
     width: 100%;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70vh;
+    margin: 0;
+}
+
+.contenedor {
+    text-align: center;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#mostrar_temperatura {
+    font-size: 20px;
+    color: #ff6b6b;
+    margin-bottom: 20px;
+}
+
+#valor_temperatura {
+    font-weight: bold;
+}
+
+#slider_consigna {
+    width: 100%;
+    margin: 10px 0;
+}
+
+#valor_consigna {
+    font-size: 18px;
+    color: #333;
 }

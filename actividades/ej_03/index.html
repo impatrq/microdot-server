@@ -4,66 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Actividad 3</title>
-    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
+    <div class="contenedor">
+        <h1>Control de Temperatura</h1>
+
+        <!-- Mostrar Temperatura -->
+        <div id="mostrar_temperatura">
+            Temperatura: <span id="valor_temperatura">--</span> °C
+        </div>
+
+        <!-- Control Deslizante de Consigna -->
+        <label for="slider_consigna">Consigna:</label>
+        <input type="range" id="slider_consigna" min="0" max="100" value="25" oninput="actualizarValorConsigna(this.value)">
+        <span id="valor_consigna">--</span> °C
+
+        <!-- Estado del Buzzer -->
+        <div id="buzzer_status">
+            Zumbador: <span id="buzzer_state">--</span>
+        </div>
+    </div>
     <header>
         <h1>Actividad 3</h1>
     </header>
     <main>
-        <section>
-            <section>
-                <h2>Control de Temperatura</h2>
-                <label for="setpointSlider">Setpoint de Temperatura: <span id="setpointValue">15</span>°C</label><br>
-                <input type="range" id="setpointSlider" class="slider" min="0" max="30" value="15" oninput="updateSetpointValue(this.value)" onchange="setSetpoint(this.value)">
-            </section>
-            <h2>Temperatura Actual</h2>
-            <label>Temperatura: <span id="currentTemperature">0</span>°C</label>
-        </section>
-        <section>
-            <h2>Estado del Buzzer</h2>
-            <label>Estado: <span id="buzzerState">Apagado</span></label>
-        </section>
     </main>
     <footer>
-        <p>Representacion frontal y visual de datos</p>
-        <p>Computadoras de aeronaves </p>
-        <p>Alumno: Santiago Rubio</p>
-        <p>Profesor: Fabrizio Carlassara</p>
-        <p id="hoy"></p>
+        <p>Representacion Frontal y Visual de Datos</p>
+        <p>Computadoras de Aeronaves</p>
+        <p>Estudiante: Santiago Rubio</p>
+        <p>Profesor: Carlassara Fabrizio</p>
+        <p id="fecha"></p>
     </footer>
     <script src="scripts/base.js"></script>
-    <script>
-        function updateSetpointValue(value) {
-            document.getElementById("setpointValue").innerText = value;
-        }
-
-        function setSetpoint(value) {
-            fetch(`/setpoint?setpoint=${value}`, { method: 'POST' })
-                .then(response => console.log('Setpoint actualizado'))
-                .catch(err => console.error('Error al actualizar el setpoint', err));
-        }
-
-        function getCurrentTemperature() {
-            fetch('/temperature')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById("currentTemperature").innerText = data.temperature.toFixed(2);
-                })
-                .catch(err => console.error('Error al obtener la temperatura', err));
-        }
-
-        function getBuzzerState() {
-            fetch('/buzzer')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById("buzzerState").innerText = data.buzzer_state ? "encendido" : "apagado";
-                })
-                .catch(err => console.error('Error al obtener el estado del buzzer', err));
-        }
-
-        setInterval(getCurrentTemperature, 2000); // temperatura cada 2 seg
-        setInterval(getBuzzerState, 2000); // estado del buzzer cada 2 seg
-    </script>
+    <script src="scripts/index.js"></script>
 </body>
 </html>

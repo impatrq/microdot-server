@@ -1,72 +1,49 @@
-import network
-import socket
-import json
-import machine
-from time import sleep
-import _thread
+# Servidor de la aplicación
+from boot import do_connect
+from microdot import Microdot, send_file
+from machine import Pin, ADC
+import ds18x20, onewire, time
 
-# Configuración de pines y sensor de temperatura
-buzzer_pin = machine.Pin(15, machine.Pin.OUT)
-temp_sensor = machine.ADC(machine.Pin(32))
-temp_sensor.atten(machine.ADC.ATTN_11DB)
+buzzer_pin = Pin(14, Pin.OUT)
+pin_ds = Pin(19)
+sensor_ds = ds18x20.DS18X20(onewire.OneWire(pin_ds))
+temperaturaCelsius = 24
 
-# Variable global para el setpoint
-setpoint_temperature = 0
+do_connect()
+app = Microdot()
 
-def start_server():
-    # Configurar dirección del servidor
-    server_address = socket.getaddrinfo('0.0.0.0', 80)[0][-1]
-    server_socket = socket.socket()
-    server_socket.bind(server_address)
-    server_socket.listen(1)
+@app.route('/')
+async def inicio(request):
+    return send_file('index.html')
 
-    print('Servidor escuchando en', server_address)
+@app.route('/<dir>/<file>')
+async def static(request, dir, file):
+    return send_file("/{}/{}".format(dir, file))
 
-    while True:
-        client_socket, client_address = server_socket.accept()
-        print('Cliente conectado desde', client_address)
-        request_data = client_socket.recv(1024)
-        request_str = str(request_data)
-        
-        if "GET /temperature" in request_str:
-            # Leer y responder con la temperatura actual
-            current_temperature = (temp_sensor.read() / 4095) * 100
-            response = json.dumps({"temperature": current_temperature})
-            client_socket.send('HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n' + response)
+@app.route('/sensors/ds18b20/read')
+async def medir_temperatura(request):
+    global sensor_ds
+    sensor_ds.convert_temp()
+    time.sleep_ms(1)
+    roms = sensor_ds.scan()
+    for rom in roms:
+        temperaturaCelsius = sensor_ds.read_temp(rom)
+    
+    datos_json = {'temperatura': temperaturaCelsius}
+    
+    return datos_json
 
-        elif "POST /setpoint" in request_str:
-            # Actualizar setpoint a partir de la solicitud
-            start_index = request_str.find('setpoint=') + len('setpoint=')
-            end_index = request_str.find(' ', start_index)
-            global setpoint_temperature
-            setpoint_temperature = int(request_str[start_index:end_index])
-            client_socket.send('HTTP/1.1 200 OK\r\n\r\n')
-        
-        elif "GET /buzzer" in request_str:
-            # Responder con el estado actual del buzzer
-            buzzer_status = json.dumps({"buzzer_state": buzzer_pin.value()})
-            client_socket.send('HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n' + buzzer_status)
+@app.route('/setpoint/set/<int:value>')
+async def ajustar_setpoint(request, valor):
+    datos_json = {}
+    print("Ajustando setpoint")
+    if valor >= temperaturaCelsius:
+        buzzer_pin.on()
+        datos_json = {'buzzer': 'Encendido'}
+    else:
+        buzzer_pin.off()
+        datos_json = {'buzzer': 'Apagado'}
+    
+    return datos_json
 
-        elif "GET /" in request_str or "GET /index.html" in request_str:
-            # Enviar contenido HTML de la página principal
-            with open("index.html", "r") as file:
-                html_content = file.read()
-            client_socket.send('HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n' + html_content)
-        
-        client_socket.close()
-
-def monitor_temperature():
-    global setpoint_temperature
-    while True:
-        current_temperature = (temp_sensor.read() / 4095) * 100
-        if current_temperature > setpoint_temperature:
-            buzzer_pin.value(1)
-        else:
-            buzzer_pin.value(0)
-        sleep(1)
-
-# Iniciar el monitoreo de la temperatura en un hilo separado
-_thread.start_new_thread(monitor_temperature, ())
-
-# Iniciar el servidor web
-start_server()
+app.run(port=80)
