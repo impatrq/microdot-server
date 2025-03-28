@@ -3,22 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actividad #</title>
+    <title>Actividad #2</title>
     <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
     <header>
-        <h1>Actividad #</h1>
+        <h1>Actividad #2</h1>
     </header>
+
     <main>
+        <section id="led-control">
+            <button onclick="controlLED('LED1')">Toggle LED 1</button>
+            <button onclick="controlLED('LED2')">Toggle LED 2</button>
+            <button onclick="controlLED('LED3')">Toggle LED 3</button>
+        </section>
+
+        <section id="rgb-control">
+            <div>
+                <label for="redRange">Rojo</label>
+                <input type="range" id="redRange" name="redRange" min="0" max="255" oninput="controlRGB()">
+            </div>
+            <div>
+                <label for="greenRange">Verde</label>
+                <input type="range" id="greenRange" name="greenRange" min="0" max="255" oninput="controlRGB()">
+            </div>
+            <div>
+                <label for="blueRange">Azul</label>
+                <input type="range" id="blueRange" name="blueRange" min="0" max="255" oninput="controlRGB()">
+            </div>
+        </section>
     </main>
+
     <footer>
         <p>Representación Frontal y Visual de Datos</p>
         <p>Computadoras de Aeronaves</p>
-        <p>Alumno XX</p>
-        <p>Prof. Carlassara Fabrizio</p>
+        <p>Alumno: Santiago Rubio</p>
+        <p>Profesor: Carlassara Fabrizio</p>
         <p id="fecha"></p>
     </footer>
+
     <script src="scripts/base.js"></script>
+    <script src="scripts/index.js"></script>
 </body>
 </html>

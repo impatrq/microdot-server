@@ -3,22 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actividad #</title>
+    <title>Actividad 3</title>
     <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
+    <div class="contenedor">
+        <h1>Control de Temperatura</h1>
+
+        <!-- Mostrar Temperatura -->
+        <div id="mostrar_temperatura">
+            Temperatura: <span id="valor_temperatura">--</span> °C
+        </div>
+
+        <!-- Control Deslizante de Consigna -->
+        <label for="slider_consigna">Consigna:</label>
+        <input type="range" id="slider_consigna" min="0" max="100" value="25" oninput="actualizarValorConsigna(this.value)">
+        <span id="valor_consigna">--</span> °C
+
+        <!-- Estado del Buzzer -->
+        <div id="buzzer_status">
+            Buzzer: <span id="buzzer_state">--</span>
+        </div>
+    </div>
     <header>
-        <h1>Actividad #</h1>
+        <h1>Actividad 3</h1>
     </header>
     <main>
     </main>
     <footer>
-        <p>Representación Frontal y Visual de Datos</p>
+        <p>Representacion Frontal y Visual de Datos</p>
         <p>Computadoras de Aeronaves</p>
-        <p>Alumno XX</p>
-        <p>Prof. Carlassara Fabrizio</p>
+        <p>Estudiante: Santiago Rubio</p>
+        <p>Profesor: Carlassara Fabrizio</p>
         <p id="fecha"></p>
     </footer>
     <script src="scripts/base.js"></script>
+    <script src="scripts/index.js"></script>
 </body>
 </html>
