@@ -5,20 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Actividad #</title>
     <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
+    <div class="container">
+        <h1>Temperature Control</h1>
+        
+        <!-- Temperature Display -->
+        <div id="temperature-display">
+            Temperature: <span id="temperature-value">--</span> °C
+        </div>
+
+        <!-- Setpoint Slider -->
+        <label for="setpoint-slider">Setpoint:</label>
+        <input type="range" id="setpoint-slider" min="0" max="100" value="25" oninput="updateSetpointValue(this.value)">
+        <span id="setpoint-value">--</span> °C
+        
+        <!-- Buzzer Sticker -->
+        <div id="buzzer-status">
+            Buzzer: <span id="buzzer-state">--</span>
+        </div>
+    </div>
     <header>
-        <h1>Actividad #</h1>
+        <h1>Actividad #3</h1>
     </header>
     <main>
     </main>
     <footer>
         <p>Representación Frontal y Visual de Datos</p>
         <p>Computadoras de Aeronaves</p>
-        <p>Alumno XX</p>
+        <p>Alumno: Mazzoni Teo</p>
         <p>Prof. Carlassara Fabrizio</p>
-        <p id="fecha"></p>
+        <p id="21/11"></p>
     </footer>
     <script src="scripts/base.js"></script>
+    <script src="scripts/index.js"></script>
 </body>
 </html>
